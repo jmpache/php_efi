@@ -1,0 +1,18 @@
+body {
+    background-image: url(../img/background.gif);
+}
+.sign-in {
+    width: 50%;
+}
+
+.sign-in button {
+    width: 30%;
+}
+
+.log-in label {
+    color: white;
+}
+
+.navbar img {
+    width: 35%;
+}
