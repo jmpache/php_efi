@@ -19,20 +19,27 @@ class MySqlFunctions {
     }
 
     public function logIn($user, $passw){
-        $sql = 'SELECT email, password FROM users WHERE email = ? AND password = ?';
+        $sql = "SELECT email, password FROM users WHERE email = ? AND password = ?";
         $con = $this->Connect();
         $pre = $con->prepare($sql);
         $pre->bind_param('ss', $user, $passw);
         $pre->execute();
         $pre->bind_result($usuario, $password);
         $result = $pre->fetch();
-        return $result;
+        if ($result) {
+            $sql = "SELECT * FROM users WHERE email = '$user'";
+            $con = $this->Connect();
+            $res = mysqli_query($con, $sql) or die ('Could not get user data' . mysqli_error($con));
+            return $res;
+        }else{
+            return $result;
+        }
     }
 
-    public function insertPost($title, $description, $username){
-        $sql = "INSERT INTO post VALUES (null, '$title', '$description', '$username', null)";
+    public function insertPost($title, $description, $userId, $categoryId){
+        $sql = "INSERT INTO publicaciones VALUES (null, '$title', '$description', null, null, null, '$userId', '$categoryId')";
         $con = $this->Connect();
-        $res = mysqli_query($con, $sql) or die ('Could not insert into post table' . mysqli_error($con));
+        $res = mysqli_query($con, $sql) or die ('Could not insert into posts table' . mysqli_error($con));
     }
 
     public function getPosts($category){

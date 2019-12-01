@@ -7,10 +7,13 @@
   $passw = $_POST['si_password'];
   $result = $op->logIn($userName, $passw);
   if ($result){
-    $_SESSION['user'] = $userName;
-    header('Location:../home.php');
-  }else{
+    while($row = mysqli_fetch_assoc($result)){
+      $_SESSION['userId'] = $row['id'];
+      $_SESSION['userName'] = $row['firstname'];
+      $_SESSION['userEmail'] = $row['email'];
+      header('Location:../home.php');
+    }
+  } else {
     echo 'Something went wrong on login';
   }
-
  ?>

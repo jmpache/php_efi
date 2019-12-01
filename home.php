@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if (!isset($_SESSION['user']))
+    if (!isset($_SESSION['userName']))
     {
         header('Location:index.php');
     }
@@ -32,24 +32,41 @@
             <a class="navbar-brand" href="#">
                 <img src="img/logo.png" alt="">
             </a>
-            <p class="navUsername"><?php echo $_SESSION['user'] ?></p>
-            <a href="mysql/logout.php"><button class="btn btn-secondary"> Log out </button></a>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    <p class="navUsername"><?php echo $_SESSION['userName'] ?></p>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <a class="dropdown-item" href="mysql/logout.php"> Log out </a>
+                </div>
+            </div>
         </div>
     </nav>
 
     <!-- CREATE POST FORM -->
     <div class="card shadow-lg mx-auto mt-5" style="width: 30%;">
         <div class="card-body">
-            <form action="mysql/post.php" method="POST">
+            <form action="mysql/post.php?userId=<?php echo $_SESSION['userId'] ?>" method="POST" enctype="multipart/form-data">
                 <div class="form-row">
                     <div class="form-group col-6">
                         <input type="text" class="form-control" name="title" placeholder="Title">
                     </div>
                     <div class="form-group col-6">
-                        <input type="text" class="form-control" name="username" placeholder="Author">
+                        <select name="category" class="custom-select">
+                            <option selected>Category</option>
+                            <?php foreach ($categories as $category2) {
+                                echo '<option value="'.$category2['id'].'">'.$category2['nombre'].'</option>';
+                            } ?>
+                        </select>
                     </div>
                 </div>
                 <textarea class="form-control col" placeholder="Write here what you want!" name="description" required></textarea>
+                <div class="input-group mt-3">
+                    <div class="custom-file">
+                        <input type="file" class="custom-file-input" name="image" id="image" disabled>
+                        <label class="custom-file-label" for="inputGroupFile01">Upload image</label>
+                    </div>
+                </div>
                 <div class="float-lg-right mt-4">
                     <button type="submit" class="btn btn-success mr-4">Post!</button>
                 </div>
