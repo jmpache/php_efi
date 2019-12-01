@@ -6,7 +6,9 @@
     }
     include 'mysql/mysqlfunctions.php';
     $function = New MySqlFunctions();
-    $posts = $function -> getPosts();
+    $category = isset($_GET['category']) ? $_GET['category'] : false;
+    $categories = $function -> getCategories($category);
+    $posts = $function -> getPosts($category);
 ?>
 
 <!DOCTYPE html>
@@ -58,17 +60,22 @@
     <div class="container">
 
         <div class="form-group mt-5" style="width: 30%">
-            <label style="color: white" for="categoriesSelect">Select category </label>
-            <select class="form-control" id="categoriesSelect">
-            <option>1</option>
-            <option>2</option>
-            <option>3</option>
-            <option>4</option>
-            <option>5</option>
-            </select>
+            <div class="dropdown">
+                <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                    Select category<?php echo $category ? (': '.$category) : '' ?>
+                </button>
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
+                    <?php foreach ($categories as $category) {
+                        echo '<a class="dropdown-item"
+                                 href="home.php?category='.$category['nombre'].'">'
+                                 .$category['nombre'].
+                             '</a>';
+                    } ?>
+                </div>
+            </div>
         </div>
 
-        <!-- RENDER -->
+        <!-- RENDER POSTS -->
         <?php
             while($row = mysqli_fetch_assoc($posts)){
                 echo 
@@ -77,6 +84,7 @@
                     <div class="card-header row">
                         <div class="col">
                             <h5>'.$row['titulo'].'</h5>
+                            <p>'.$row['nombre'].'</p>
                         </div>
                         <div class="col">
                             <p class="float-lg-right">'.$row['creado'].'<p>

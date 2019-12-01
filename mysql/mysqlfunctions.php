@@ -35,8 +35,21 @@ class MySqlFunctions {
         $res = mysqli_query($con, $sql) or die ('Could not insert into post table' . mysqli_error($con));
     }
 
-    public function getPosts(){
-        $sql = "SELECT * FROM publicaciones INNER JOIN users WHERE publicaciones.user_id = users.id";
+    public function getPosts($category){
+        if ($category){
+            $sql = "SELECT * FROM
+            ((publicaciones INNER JOIN users 
+            ON publicaciones.user_id = users.id)
+            INNER JOIN categorias ON publicaciones.categoria_id = categorias.id)
+            WHERE categorias.nombre = '$category'
+            ";
+        } else {
+            $sql = "SELECT * FROM
+            ((publicaciones INNER JOIN users 
+            ON publicaciones.user_id = users.id)
+            INNER JOIN categorias ON publicaciones.categoria_id = categorias.id)";                
+        }
+        
         $con = $this->Connect();
         $res = mysqli_query($con, $sql) or die ('Could not reach the posts' . mysqli_error($con));
         return $res;
@@ -52,6 +65,13 @@ class MySqlFunctions {
         $sql = "UPDATE post SET title='$title', description = '$description', username = '$username' WHERE id = $id";
         $con = $this->Connect();
         $res = mysqli_query($con, $sql) or die ('Could not update this post' . mysqli_error($con));
+    }
+
+    public function getCategories(){
+        $sql = "SELECT * FROM categorias";
+        $con = $this->Connect();
+        $res = mysqli_query($con, $sql) or die ('Could not get categories');
+        return $res;
     }
 }
 
