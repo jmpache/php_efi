@@ -34,7 +34,8 @@
             </a>
             <div class="dropdown">
                 <button class="btn btn-secondary dropdown-toggle" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                    <p class="navUsername"><?php echo $_SESSION['userName'] ?></p>
+                    <img style="border-radius: 50%; margin-right: 10px" src="<?php echo $_SESSION['userAvatar'] ?>">
+                    <span class="navUsername"><?php echo $_SESSION['userName'] ?></span>
                 </button>
                 <div class="dropdown-menu" aria-labelledby="dropdownMenuButton">
                     <a class="dropdown-item" href="mysql/logout.php"> Log out </a>

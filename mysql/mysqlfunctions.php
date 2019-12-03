@@ -12,8 +12,8 @@ class MySqlFunctions {
         return $con;
     }
     
-    public function signUp($firstName, $lastName, $passw, $email){
-        $sql = "INSERT INTO users VALUES (null, '$firstName', '$lastName', '$passw', '$email', null, null)";
+    public function signUp($firstName, $lastName, $passw, $email, $avatar){
+        $sql = "INSERT INTO users VALUES (null, '$firstName', '$lastName', '$passw', '$email', null, '$avatar')";
         $con = $this->Connect();
         mysqli_query($con, $sql) or die ('Sign up failed' . mysqli_error($con));
     }

@@ -11,6 +11,7 @@
       $_SESSION['userId'] = $row['id'];
       $_SESSION['userName'] = $row['firstname'];
       $_SESSION['userEmail'] = $row['email'];
+      $_SESSION['userAvatar'] = $row['avatar'];
       header('Location:../home.php');
     }
   } else {
