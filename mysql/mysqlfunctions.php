@@ -1,4 +1,9 @@
 <?php
+use PHPMailer\PHPMailer\PHPMailer;
+use PHPMailer\PHPMailer\SMTP;
+use PHPMailer\PHPMailer\Exception;
+require 'vendor/autoload.php';
+
 
 class MySqlFunctions {
 
@@ -16,6 +21,35 @@ class MySqlFunctions {
         $sql = "INSERT INTO users VALUES (null, '$firstName', '$lastName', '$passw', '$email', null, '$avatar')";
         $con = $this->Connect();
         mysqli_query($con, $sql) or die ('Sign up failed' . mysqli_error($con));
+    }
+
+    public function sendEmail($subj, $text, $email){
+        $mail = new PHPMailer(true);
+        try {
+            //Server settings
+            $mail->SMTPDebug = SMTP::DEBUG_SERVER;                      // Enable verbose debug output
+            $mail->isSMTP();                                            // Send using SMTP
+            $mail->Host       = 'smtp.gmail.com';                    // Set the SMTP server to send through
+            $mail->SMTPAuth   = true;                                   // Enable SMTP authentication
+            $mail->Username   = '';                     // SMTP username
+            $mail->Password   = '';                               // SMTP password
+            $mail->SMTPSecure = PHPMailer::ENCRYPTION_STARTTLS;         // Enable TLS encryption; `PHPMailer::ENCRYPTION_SMTPS` also accepted
+            $mail->Port       = 587;                                    // TCP port to connect to
+
+            //Recipients
+            $mail->setFrom('from@example.com', 'Bloggie');
+            $mail->addAddress($email, 'Joe User');     // Add a recipient
+
+            // Content
+            $mail->isHTML(true);                                  // Set email format to HTML
+            $mail->Subject = $subj;
+            $mail->Body    = $text;
+
+            $mail->send();
+            echo 'Message has been sent';
+        } catch (Exception $e) {
+            echo "Message could not be sent. Mailer Error: {$mail->ErrorInfo}";
+        }
     }
 
     public function logIn($user, $passw){

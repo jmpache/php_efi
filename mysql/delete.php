@@ -6,6 +6,6 @@ $id = $_GET['id'];
 
 $function = New MySqlFunctions();
 $function -> deletePost($id);
-header('Location: ../home.php')
+header('Location: ../home.php');
 
 ?>
